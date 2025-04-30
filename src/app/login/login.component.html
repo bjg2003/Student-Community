@@ -1,0 +1,67 @@
+<div class="flex min-h-screen bg-[#050B18] text-white">
+    <!-- Left Side -->
+    <div class="w-1/2 flex flex-col items-center justify-center p-8">
+      <img src="/assets/pce-logo.png" alt="PCE Logo" class="w-48 mb-8" />
+      <h1 class="text-4xl font-bold mb-2">Welcome to PCE</h1>
+      <h2 class="text-4xl font-bold text-blue-500 mb-4">Student Community</h2>
+      <p class="text-center text-lg max-w-md">
+        This is PCE's exclusive social network platform. Connect with your friends, seniors and clubs all virtually and get to know the latest of all the college life has to offer!
+      </p>
+    </div>
+  
+    <!-- Right Side -->
+    <div class="w-1/2 flex flex-col justify-center px-20 space-y-4">
+      <h2 class="text-3xl font-bold mb-6">Login</h2>
+  
+      <button 
+        (click)="useDemoLogin()" 
+        class="bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-md font-semibold w-full">
+        Use Demo User Login
+      </button>
+  
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-4">
+        <div>
+          <input
+            type="email"
+            formControlName="email"
+            placeholder="Email ID"
+            class="bg-[#0B1120] border border-gray-600 rounded-md py-3 px-4 w-full text-white placeholder-gray-400"
+          />
+          <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="text-red-500 text-sm mt-1">
+            <span *ngIf="loginForm.get('email')?.errors?.['required']">Email is required</span>
+            <span *ngIf="loginForm.get('email')?.errors?.['email']">Please enter a valid email</span>
+          </div>
+        </div>
+        
+        <div>
+          <input
+            type="password"
+            formControlName="password"
+            placeholder="Password"
+            class="bg-[#0B1120] border border-gray-600 rounded-md py-3 px-4 w-full text-white placeholder-gray-400"
+          />
+          <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="text-red-500 text-sm mt-1">
+            <span *ngIf="loginForm.get('password')?.errors?.['required']">Password is required</span>
+            <span *ngIf="loginForm.get('password')?.errors?.['minlength']">Password must be at least 6 characters</span>
+          </div>
+        </div>
+  
+        <div class="flex items-center justify-between mt-4">
+          <p class="text-sm text-gray-400">
+            Don't have an account? 
+            <a routerLink="/signup" class="text-blue-500 hover:text-blue-600">Sign up</a>
+          </p>
+        </div>
+
+        <button 
+          type="submit" 
+          [disabled]="loginForm.invalid || isSubmitting"
+          class="bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-md font-semibold w-full disabled:opacity-50 disabled:cursor-not-allowed"
+          (click)="onSubmit()">
+          <span *ngIf="!isSubmitting">Login</span>
+          <span *ngIf="isSubmitting">Logging in...</span>
+        </button>
+      </form>
+    </div>
+  </div>
+  

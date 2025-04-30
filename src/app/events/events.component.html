@@ -1,0 +1,167 @@
+<div class="min-h-screen bg-[#050B18] text-white p-6">
+  <!-- Events Header -->
+  <div class="bg-[#0B1120] rounded-lg p-6 mb-6">
+    <h1 class="text-3xl font-bold text-blue-500 mb-2">Events</h1>
+    <p class="text-gray-300">Find all the fun and exciting activities happening among the DAICT community here.</p>
+    
+    <div class="flex justify-end mt-4">
+      <button 
+        (click)="toggleAddEventForm()" 
+        class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md font-medium flex items-center">
+        <i class="fas fa-plus mr-2"></i>
+        Add Event
+      </button>
+    </div>
+  </div>
+
+  <!-- Add Event Form -->
+  <div *ngIf="showAddEventForm" class="bg-[#1E293B] rounded-lg p-6 mb-6 animate-fadeIn">
+    <h2 class="text-xl font-bold mb-4">Create New Event</h2>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">Event Name</label>
+        <input 
+          type="text" 
+          [(ngModel)]="newEvent.name" 
+          class="w-full bg-[#0B1120] border border-gray-700 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+          placeholder="Enter event name"
+        >
+      </div>
+      
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">Organizer</label>
+        <input 
+          type="text" 
+          [(ngModel)]="newEvent.organizer" 
+          class="w-full bg-[#0B1120] border border-gray-700 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+          placeholder="Club or organization name"
+        >
+      </div>
+      
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">Start Date</label>
+        <input 
+          type="date" 
+          [ngModel]="newEvent.startDate | date:'yyyy-MM-dd'" 
+          (ngModelChange)="newEvent.startDate = $event"
+          class="w-full bg-[#0B1120] border border-gray-700 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+        >
+      </div>
+      
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">End Date (Optional)</label>
+        <input 
+          type="date" 
+          [ngModel]="newEvent.endDate | date:'yyyy-MM-dd'" 
+          (ngModelChange)="newEvent.endDate = $event"
+          class="w-full bg-[#0B1120] border border-gray-700 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+        >
+      </div>
+      
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">Venue</label>
+        <input 
+          type="text" 
+          [(ngModel)]="newEvent.venue" 
+          class="w-full bg-[#0B1120] border border-gray-700 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+          placeholder="Location or online platform"
+        >
+      </div>
+      
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">Time</label>
+        <input 
+          type="text" 
+          [(ngModel)]="newEvent.time" 
+          class="w-full bg-[#0B1120] border border-gray-700 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+          placeholder="e.g. 11 PM"
+        >
+      </div>
+      
+      <div class="mb-4">
+        <label class="block text-sm font-medium mb-1">Registration Deadline</label>
+        <input 
+          type="date" 
+          [ngModel]="newEvent.registrationDeadline | date:'yyyy-MM-dd'" 
+          (ngModelChange)="newEvent.registrationDeadline = $event"
+          class="w-full bg-[#0B1120] border border-gray-700 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500"
+        >
+      </div>
+      
+      <div class="mb-4 md:col-span-2">
+        <label class="block text-sm font-medium mb-1">Description (Optional)</label>
+        <textarea 
+          [(ngModel)]="newEvent.description" 
+          class="w-full bg-[#0B1120] border border-gray-700 rounded-md py-2 px-3 focus:outline-none focus:border-blue-500 min-h-[100px]"
+          placeholder="Describe your event"
+        ></textarea>
+      </div>
+    </div>
+    
+    <div class="flex justify-end space-x-3 mt-4">
+      <button 
+        (click)="toggleAddEventForm()" 
+        class="px-4 py-2 rounded-md font-medium border border-gray-600 hover:bg-gray-700">
+        Cancel
+      </button>
+      <button 
+        (click)="addEvent()" 
+        [disabled]="!validateEvent()"
+        [ngClass]="{'bg-blue-600 hover:bg-blue-700': validateEvent(), 'bg-blue-800 cursor-not-allowed': !validateEvent()}"
+        class="px-4 py-2 rounded-md font-medium">
+        Create Event
+      </button>
+    </div>
+  </div>
+
+  <!-- Upcoming Events Section -->
+  <h2 class="text-xl font-bold mb-4 text-gray-300">Upcoming event</h2>
+  
+  <!-- Event Cards -->
+  <div class="grid grid-cols-1 gap-6">
+    <div *ngFor="let event of events" class="bg-[#1E293B] rounded-lg overflow-hidden">
+      <div class="flex flex-col md:flex-row">
+        <div class="p-6 flex-1">
+          <h3 class="text-2xl font-bold mb-1">{{ event.name }}</h3>
+          <p class="text-gray-400 mb-4">Event by {{ event.organizer }}</p>
+          
+          <div class="space-y-2 text-gray-300">
+            <p>
+              <span class="text-blue-400">Date: </span>
+              <span *ngIf="event.endDate">{{ event.startDate | date:'dd MMMM yyyy' }} - {{ event.endDate | date:'dd MMMM yyyy' }}</span>
+              <span *ngIf="!event.endDate">{{ event.startDate | date:'dd MMMM yyyy' }}</span>
+            </p>
+            <p><span class="text-blue-400">Venue: </span>{{ event.venue }}</p>
+            <p><span class="text-blue-400">Time: </span>{{ event.time }}</p>
+            <p><span class="text-blue-400">Deadline to register: </span>{{ event.registrationDeadline | date:'h:mm a, dd MMMM yyyy' }}</p>
+          </div>
+          
+          <div class="mt-6">
+            <p class="text-gray-400 mb-2">Attendees: {{ event.attendees }}</p>
+            <button 
+              (click)="attendEvent(event.id)" 
+              class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md font-medium inline-flex items-center">
+              <i class="fas fa-check mr-2"></i>
+              Attending
+            </button>
+          </div>
+        </div>
+        
+        <div *ngIf="event.image" class="md:w-1/3 h-64 md:h-auto">
+          <img [src]="event.image" [alt]="event.name" class="w-full h-full object-cover">
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- No Events Message -->
+  <div *ngIf="events.length === 0" class="bg-[#1E293B] rounded-lg p-6 text-center">
+    <p class="text-gray-400">No upcoming events. Why not create one?</p>
+    <button 
+      (click)="toggleAddEventForm()" 
+      class="mt-4 bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md font-medium">
+      Create Event
+    </button>
+  </div>
+</div>

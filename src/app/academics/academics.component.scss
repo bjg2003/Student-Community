@@ -1,0 +1,27 @@
+// Academics component styles
+.resource-card {
+  transition: transform 0.2s ease-in-out;
+  
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+// Resource type indicators
+.resource-icon {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background-color: rgba(59, 130, 246, 0.2);
+  color: #60a5fa;
+  font-size: 1.5rem;
+  margin-bottom: 1rem;
+}
+
+// Active filter indicator
+.filter-active {
+  border: 2px solid #3b82f6;
+}

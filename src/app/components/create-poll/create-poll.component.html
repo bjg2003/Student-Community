@@ -1,0 +1,57 @@
+<div class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+  <div class="bg-[#1E293B] rounded-lg p-6 w-full max-w-lg animate-fadeIn">
+    <h2 class="text-xl font-semibold mb-4">Create a new poll</h2>
+    <div class="space-y-4">
+      <div>
+        <label for="question" class="block text-sm font-medium text-gray-400 mb-1">Question</label>
+        <input 
+          type="text" 
+          id="question"
+          [(ngModel)]="newPoll.question"
+          placeholder="Ask a question..."
+          class="w-full bg-[#0B1120] border border-gray-700 rounded-md py-2 px-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+        />
+      </div>
+
+      <div>
+        <label class="block text-sm font-medium text-gray-400 mb-1">Options</label>
+        <div class="space-y-2">
+          <div *ngFor="let option of newPoll.options; let i = index" class="flex items-center space-x-2">
+            <input 
+              type="text" 
+              [(ngModel)]="newPoll.options[i]"
+              placeholder="Option {{i + 1}}"
+              class="flex-1 bg-[#0B1120] border border-gray-700 rounded-md py-2 px-4 text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+            <button 
+              *ngIf="newPoll.options.length > 2"
+              (click)="removeOption(i)" 
+              class="text-red-400 hover:text-red-300 p-2"
+              title="Remove option">
+              <i class="fas fa-times"></i>
+            </button>
+          </div>
+        </div>
+        <button 
+          *ngIf="newPoll.options.length < 10"
+          (click)="addOption()" 
+          class="mt-2 text-blue-400 hover:text-blue-300 text-sm flex items-center">
+          <i class="fas fa-plus mr-1"></i> Add another option
+        </button>
+      </div>
+
+      <div class="flex justify-end space-x-3 pt-4">
+        <button 
+          (click)="cancel()" 
+          class="px-4 py-2 text-gray-400 hover:text-white transition-colors">
+          Cancel
+        </button>
+        <button 
+          (click)="createPoll()" 
+          class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md font-medium transition-colors">
+          Create Poll
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

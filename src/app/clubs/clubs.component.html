@@ -1,0 +1,138 @@
+<div class="clubs-container">
+    <div class="clubs-header">
+      <div class="title-section">
+        <h1 class="main-title">PCE<br>Clubs</h1>
+        <p class="subtitle">
+          Students take and learn the best available from the community itself, making the campus a vibrant place to nurture and grow into. These little clubs make the college an organism with its own city to breed into!
+        </p>
+      </div>
+    
+      <div class="search-section">
+        <div class="search-bar">
+          <input
+            type="text"
+            placeholder="Search clubs..."
+            #searchInput
+            (input)="searchClubs(searchInput.value)"
+          />
+        </div>
+        <button class="create-club-btn" (click)="openCreateClubModal()">
+          <i class="fas fa-plus"></i> Create Club
+        </button>
+      </div>
+    
+      <div class="tags-filter">
+        <button
+          class="tag-btn"
+          [class.active]="activeTag === 'all'"
+          (click)="filterClubs('all')"
+        >
+          All
+        </button>
+        <button
+          class="tag-btn"
+          *ngFor="let tag of getAllTags(); trackBy: trackByTag"
+          [class.active]="activeTag === tag"
+          (click)="filterClubs(tag)"
+        >
+          {{ tag }}
+        </button>
+      </div>
+    </div>
+    
+    <div class="clubs-grid">
+      <!-- Club cards are dynamically generated from filteredClubs array -->
+      <div
+        class="club-card"
+        *ngFor="let club of filteredClubs; trackBy: trackByClubId"
+      >
+        <div class="club-header">
+          <img
+            [src]="club.logo"
+            [alt]="club.name + ' logo'"
+            class="club-logo"
+          />
+          <div class="club-info">
+            <h3>{{ club.name }}</h3>
+            <p class="members">{{ club.members }} members</p>
+          </div>
+        </div>
+    
+        <div class="club-content">
+          <p class="description">{{ club.description }}</p>
+  
+          <div class="club-tags">
+            <span class="tag" *ngFor="let tag of club.tags">{{ tag }}</span>
+          </div>
+    
+          <div class="club-president">
+            <img
+              [src]="club.presidentPic"
+              [alt]="club.president"
+              class="president-pic"
+            />
+            <div class="president-info">
+              <span class="label">President</span>
+              <span class="name">{{ club.president }}</span>
+            </div>
+          </div>
+    
+          <div class="club-social" *ngIf="club.socialLinks">
+            <a
+              *ngIf="club.socialLinks.instagram"
+              [href]="club.socialLinks.instagram"
+              target="_blank"
+              class="social-link instagram"
+            >
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a
+              *ngIf="club.socialLinks.facebook"
+              [href]="club.socialLinks.facebook"
+              target="_blank"
+              class="social-link facebook"
+            >
+              <i class="fab fa-facebook"></i>
+            </a>
+            <a
+              *ngIf="club.socialLinks.linkedin"
+              [href]="club.socialLinks.linkedin"
+              target="_blank"
+              class="social-link linkedin"
+            >
+              <i class="fab fa-linkedin"></i>
+            </a>
+          </div>
+    
+          <div
+            class="upcoming-events"
+            *ngIf="club.upcomingEvents && club.upcomingEvents.length > 0"
+          >
+            <h4>Upcoming Events</h4>
+            <div class="event" *ngFor="let event of club.upcomingEvents">
+              <h5>{{ event.title }}</h5>
+              <p class="event-details">
+                <span class="date">{{ event.date | date }}</span>
+                <span class="venue">{{ event.venue }}</span>
+              </p>
+              <a
+                *ngIf="event.registrationLink"
+                [href]="event.registrationLink"
+                target="_blank"
+                class="register-btn"
+                >Register</a
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Create Club Modal -->
+  <app-create-club 
+    *ngIf="showCreateClub" 
+    (closeModal)="closeCreateClubModal()" 
+    (clubCreated)="handleClubCreated()"
+  ></app-create-club>
+  

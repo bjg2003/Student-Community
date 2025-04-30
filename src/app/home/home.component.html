@@ -1,0 +1,180 @@
+<div class="min-h-screen bg-[#050B18] text-white">
+  <!-- Navigation Header -->
+  <header class="bg-[#0B1120] border-b border-gray-800 fixed w-full z-50">
+    <div class="container mx-auto px-4 py-3 flex items-center justify-between">
+      <div class="flex items-center space-x-4">
+        <img src="assets/pce-logo.png" alt="PCE Logo" class="h-8" />
+        <h1 class="text-xl font-bold text-blue-500">Student Community</h1>
+      </div>
+      <div class="flex items-center space-x-4">
+        <button (click)="showCreatePost = true" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-md font-medium">
+          Create Post
+        </button>
+        <app-create-post *ngIf="showCreatePost" (closeModal)="showCreatePost = false" (postCreated)="onPostCreated($event)"></app-create-post>
+        <div class="relative cursor-pointer group">
+          <img [src]="userProfilePic || 'assets/default-avatar.png'" alt="Profile" class="w-8 h-8 rounded-full" />
+          <!-- Profile Dropdown -->
+          <div class="absolute right-0 mt-2 w-64 bg-[#1E293B] rounded-lg shadow-lg py-2 hidden group-hover:block">
+            <!-- Profile Preview -->
+            <div class="px-4 py-3 border-b border-gray-700">
+              <div class="flex items-center space-x-3">
+                <img [src]="userProfilePic || 'assets/default-avatar.png'" alt="Profile" class="w-12 h-12 rounded-full" />
+                <div>
+                  <h3 class="font-medium">{{userName}}</h3>
+                  <p class="text-sm text-gray-400">{{userEmail}}</p>
+                </div>
+              </div>
+            </div>
+            <!-- Navigation Links -->
+            <a routerLink="/profile" class="block px-4 py-2 hover:bg-[#2D3B4E] transition-colors">
+              <i class="fas fa-user mr-2"></i>
+              View Profile
+            </a>
+            <a routerLink="/settings" class="block px-4 py-2 hover:bg-[#2D3B4E] transition-colors">
+              <i class="fas fa-cog mr-2"></i>
+              Settings
+            </a>
+            <div class="border-t border-gray-700 mt-2 pt-2">
+              <button (click)="logout()" class="w-full text-left px-4 py-2 hover:bg-[#2D3B4E] transition-colors text-red-400 hover:text-red-300">
+                <i class="fas fa-sign-out-alt mr-2"></i>
+                Logout
+              </button>
+            </div>
+          </div>
+        </div>
+        <button (click)="logout()" class="text-gray-400 hover:text-white">
+          <i class="fas fa-sign-out-alt"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container mx-auto px-4 pt-16 flex gap-6">
+    <!-- Left Sidebar -->
+    <aside [class.w-64]="!isSidebarCollapsed" [class.w-16]="isSidebarCollapsed" class="fixed left-4 top-20 space-y-2 transition-all duration-300 ease-in-out">
+      <button (click)="toggleSidebar()" class="absolute -right-3 top-1/2 transform -translate-y-1/2 bg-[#1E293B] p-2 rounded-full hover:bg-[#2D3B4E] transition-colors">
+        <i class="fas" [class.fa-chevron-left]="!isSidebarCollapsed" [class.fa-chevron-right]="isSidebarCollapsed"></i>
+      </button>
+      <a routerLink="/home" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-[#1E293B] transition-colors" routerLinkActive="bg-[#1E293B]">
+        <i class="fas fa-home text-xl"></i>
+        <span [class.hidden]="isSidebarCollapsed">Home</span>
+      </a>
+      <a routerLink="/academic" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-[#1E293B] transition-colors" routerLinkActive="bg-[#1E293B]">
+        <i class="fas fa-book text-xl"></i>
+        <span [class.hidden]="isSidebarCollapsed">Academic</span>
+      </a>
+      <a routerLink="/clubs" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-[#1E293B] transition-colors" routerLinkActive="bg-[#1E293B]">
+        <i class="fas fa-users text-xl"></i>
+        <span [class.hidden]="isSidebarCollapsed">Clubs</span>
+      </a>
+      <a routerLink="/events" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-[#1E293B] transition-colors" routerLinkActive="bg-[#1E293B]">
+        <i class="fas fa-calendar text-xl"></i>
+        <span [class.hidden]="isSidebarCollapsed">Events</span>
+      </a>
+      <a routerLink="/polling" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-[#1E293B] transition-colors" routerLinkActive="bg-[#1E293B]">
+        <i class="fas fa-poll text-xl"></i>
+        <span [class.hidden]="isSidebarCollapsed">Polling</span>
+      </a>
+    </aside>
+
+    <!-- Main Feed -->
+    <main [class.ml-72]="!isSidebarCollapsed" [class.ml-24]="isSidebarCollapsed" class="flex-1 mr-80 transition-all duration-300">
+      <!-- Create Post Card -->
+      <div class="bg-[#1E293B] rounded-lg p-4 mb-6">
+        <div class="flex items-center space-x-4">
+          <img [src]="userProfilePic || 'assets/default-avatar.png'" alt="Profile" class="w-10 h-10 rounded-full" />
+          <input
+            type="text"
+            placeholder="What's on your mind?"
+            class="bg-[#0B1120] border border-gray-700 rounded-full py-2 px-4 w-full text-sm focus:outline-none focus:border-blue-500"
+          />
+        </div>
+        <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-700">
+          <button class="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors">
+            <i class="fas fa-image"></i>
+            <span>Photo</span>
+          </button>
+          <button class="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors">
+            <i class="fas fa-link"></i>
+            <span>Link</span>
+          </button>
+          <button class="flex items-center space-x-2 text-gray-400 hover:text-white transition-colors">
+            <i class="fas fa-video"></i>
+            <span>Video</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Posts Feed -->
+      <div class="space-y-6">
+        <article *ngFor="let post of posts" class="bg-[#1E293B] rounded-lg overflow-hidden">
+          <div class="p-4">
+            <div class="flex items-center space-x-3">
+              <img [src]="post.authorPic || 'assets/default-avatar.png'" alt="User" class="w-10 h-10 rounded-full" />
+              <div>
+                <h3 class="font-medium">{{post.authorName}}</h3>
+                <p class="text-sm text-gray-400">{{post.timestamp | timeAgo}}</p>
+              </div>
+            </div>
+            <p class="mt-4">{{post.content}}</p>
+            <img *ngIf="post.image" [src]="post.image" [alt]="post.imageAlt || 'Post image'" class="mt-4 rounded-lg w-full" />
+            <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-700">
+              <button (click)="likePost(post.id)" class="flex items-center space-x-2" [class.text-blue-500]="post.isLiked" [class.text-gray-400]="!post.isLiked">
+                <i class="fas" [class.fa-heart]="post.isLiked" [class.fa-heart-o]="!post.isLiked"></i>
+                <span>{{post.likes}} Like{{post.likes !== 1 ? 's' : ''}}</span>
+              </button>
+              <button (click)="toggleComments(post.id)" class="flex items-center space-x-2 text-gray-400 hover:text-blue-500 transition-colors">
+                <i class="fas fa-comment"></i>
+                <span>{{post.comments.length}} Comment{{post.comments.length !== 1 ? 's' : ''}}</span>
+              </button>
+              <button (click)="sharePost(post.id)" class="flex items-center space-x-2 text-gray-400 hover:text-blue-500 transition-colors">
+                <i class="fas fa-share"></i>
+                <span>Share</span>
+              </button>
+            </div>
+          </div>
+        </article>
+      </div>
+    </main>
+
+    <!-- Right Sidebar -->
+    <aside class="w-72 fixed right-4 top-20 space-y-6">
+      <!-- Upcoming Events -->
+      <div class="bg-[#1E293B] rounded-lg p-4">
+        <h2 class="text-lg font-semibold mb-4">Upcoming Events</h2>
+        <div class="space-y-4">
+          <div *ngFor="let event of upcomingEvents" class="flex items-center space-x-3">
+            <div class="bg-blue-600 rounded-lg p-2 text-center min-w-[60px]">
+              <span class="block text-sm">{{event.date | date:'MMM'}}</span>
+              <span class="block text-lg font-bold">{{event.date | date:'d'}}</span>
+            </div>
+            <div>
+              <h3 class="font-medium">{{event.title}}</h3>
+              <p class="text-sm text-gray-400">{{event.time}}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Suggestions -->
+      <div class="bg-[#1E293B] rounded-lg p-4">
+        <h2 class="text-lg font-semibold mb-4">People You May Know</h2>
+        <div class="space-y-4">
+          <div *ngFor="let suggestion of suggestions" class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <img [src]="suggestion.profilePic || 'assets/default-avatar.png'" alt="User" class="w-10 h-10 rounded-full" />
+              <div>
+                <h3 class="font-medium">{{suggestion.name}}</h3>
+                <p class="text-sm text-gray-400">{{suggestion.department}}</p>
+              </div>
+            </div>
+            <button (click)="connect(suggestion.id)" class="text-blue-500 hover:text-blue-600 text-sm font-medium">
+              Connect
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+  </div>
+</div>

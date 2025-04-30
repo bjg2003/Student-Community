@@ -1,0 +1,171 @@
+<div class="min-h-screen bg-[#050B18] text-white pt-16">
+  <!-- Profile Header -->
+  <div class="bg-[#0B1120] border-b border-gray-800 py-8">
+    <div class="container mx-auto px-4">
+      <div class="flex flex-col items-center md:flex-row md:items-start md:space-x-8">
+        <!-- Profile Picture Section -->
+        <div class="relative group">
+          <img [src]="userProfilePic || 'assets/default-avatar.png'" alt="Profile Picture" class="w-32 h-32 rounded-full border-4 border-blue-500" />
+          <div class="absolute inset-0 flex items-center justify-center bg-black bg-opacity-50 rounded-full opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer">
+            <label for="profile-upload" class="cursor-pointer">
+              <i class="fas fa-camera text-2xl"></i>
+              <input type="file" id="profile-upload" class="hidden" (change)="onProfilePicChange($event)" accept="image/*" />
+            </label>
+          </div>
+        </div>
+
+        <!-- Profile Info -->
+        <div class="flex-1 mt-6 md:mt-0 text-center md:text-left">
+          <div class="flex flex-col md:flex-row md:items-center md:justify-between">
+            <div>
+              <h1 class="text-3xl font-bold">{{userName}}</h1>
+              <p class="text-gray-400 mt-1">{{userEmail}}</p>
+              <p class="text-gray-400 mt-1">{{userDepartment}} • {{userBatch}}</p>
+            </div>
+            <button (click)="toggleEditMode()" class="mt-4 md:mt-0 bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-md font-medium transition-colors">
+              <i class="fas fa-edit mr-2"></i>Edit Profile
+            </button>
+          </div>
+          <p class="mt-4 text-gray-300">{{userBio || 'No bio added yet'}}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Content -->
+  <div class="container mx-auto px-4 py-8">
+    <!-- Tabs -->
+    <div class="flex space-x-6 border-b border-gray-800 mb-8">
+      <button 
+        (click)="activeTab = 'posts'"
+        [class.border-blue-500]="activeTab === 'posts'"
+        [class.text-blue-500]="activeTab === 'posts'"
+        class="pb-4 border-b-2 border-transparent font-medium transition-colors">
+        <i class="fas fa-th-large mr-2"></i>Posts
+      </button>
+      <button 
+        (click)="activeTab = 'about'"
+        [class.border-blue-500]="activeTab === 'about'"
+        [class.text-blue-500]="activeTab === 'about'"
+        class="pb-4 border-b-2 border-transparent font-medium transition-colors">
+        <i class="fas fa-user mr-2"></i>About
+      </button>
+      <button 
+        (click)="activeTab = 'friends'"
+        [class.border-blue-500]="activeTab === 'friends'"
+        [class.text-blue-500]="activeTab === 'friends'"
+        class="pb-4 border-b-2 border-transparent font-medium transition-colors">
+        <i class="fas fa-users mr-2"></i>Friends
+      </button>
+    </div>
+
+    <!-- Posts Tab Content -->
+    <div *ngIf="activeTab === 'posts'" class="space-y-6">
+      <article *ngFor="let post of userPosts" class="bg-[#1E293B] rounded-lg overflow-hidden">
+        <div class="p-4">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-3">
+              <img [src]="userProfilePic || 'assets/default-avatar.png'" alt="Profile" class="w-10 h-10 rounded-full" />
+              <div>
+                <h3 class="font-medium">{{userName}}</h3>
+                <p class="text-sm text-gray-400">{{post.timestamp | timeAgo}}</p>
+              </div>
+            </div>
+            <button (click)="deletePost(post.id)" class="text-gray-400 hover:text-red-500 transition-colors">
+              <i class="fas fa-trash"></i>
+            </button>
+          </div>
+          <p class="mt-4">{{post.content}}</p>
+          <img *ngIf="post.image" [src]="post.image" [alt]="post.imageAlt || 'Post image'" class="mt-4 rounded-lg w-full" />
+          <div class="flex items-center justify-between mt-4 pt-4 border-t border-gray-700">
+            <button (click)="likePost(post.id)" class="flex items-center space-x-2" [class.text-blue-500]="post.isLiked">
+              <i class="fas" [class.fa-heart]="post.isLiked" [class.fa-heart-o]="!post.isLiked"></i>
+              <span>{{post.likes}} Like{{post.likes !== 1 ? 's' : ''}}</span>
+            </button>
+            <button class="flex items-center space-x-2 text-gray-400 hover:text-blue-500 transition-colors">
+              <i class="fas fa-comment"></i>
+              <span>{{post.comments.length}} Comment{{post.comments.length !== 1 ? 's' : ''}}</span>
+            </button>
+          </div>
+        </div>
+      </article>
+    </div>
+
+    <!-- About Tab Content -->
+    <div *ngIf="activeTab === 'about'" class="bg-[#1E293B] rounded-lg p-6">
+      <form *ngIf="isEditMode" (ngSubmit)="saveProfile()" class="space-y-6">
+        <div>
+          <label class="block text-sm font-medium text-gray-400 mb-2">Name</label>
+          <input [(ngModel)]="editForm.name" name="name" type="text" class="w-full bg-[#0B1120] border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-400 mb-2">Bio</label>
+          <textarea [(ngModel)]="editForm.bio" name="bio" rows="4" class="w-full bg-[#0B1120] border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500"></textarea>
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-400 mb-2">Department</label>
+          <input [(ngModel)]="editForm.department" name="department" type="text" class="w-full bg-[#0B1120] border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500" />
+        </div>
+        <div>
+          <label class="block text-sm font-medium text-gray-400 mb-2">Batch</label>
+          <input [(ngModel)]="editForm.batch" name="batch" type="text" class="w-full bg-[#0B1120] border border-gray-700 rounded-md px-4 py-2 focus:outline-none focus:border-blue-500" />
+        </div>
+        <div class="flex space-x-4">
+          <button type="submit" class="bg-blue-600 hover:bg-blue-700 px-6 py-2 rounded-md font-medium transition-colors">Save Changes</button>
+          <button type="button" (click)="cancelEdit()" class="bg-gray-700 hover:bg-gray-600 px-6 py-2 rounded-md font-medium transition-colors">Cancel</button>
+        </div>
+      </form>
+
+      <div *ngIf="!isEditMode" class="space-y-6">
+        <div>
+          <h3 class="text-lg font-medium mb-2">About Me</h3>
+          <p class="text-gray-300">{{userBio || 'No bio added yet'}}</p>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div>
+            <h3 class="text-lg font-medium mb-4">Personal Information</h3>
+            <div class="space-y-3">
+              <div class="flex items-center space-x-2">
+                <i class="fas fa-user text-gray-400"></i>
+                <span class="text-gray-300">{{userName}}</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <i class="fas fa-envelope text-gray-400"></i>
+                <span class="text-gray-300">{{userEmail}}</span>
+              </div>
+            </div>
+          </div>
+          <div>
+            <h3 class="text-lg font-medium mb-4">Academic Information</h3>
+            <div class="space-y-3">
+              <div class="flex items-center space-x-2">
+                <i class="fas fa-graduation-cap text-gray-400"></i>
+                <span class="text-gray-300">{{userDepartment}}</span>
+              </div>
+              <div class="flex items-center space-x-2">
+                <i class="fas fa-calendar text-gray-400"></i>
+                <span class="text-gray-300">{{userBatch}}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Friends Tab Content -->
+    <div *ngIf="activeTab === 'friends'" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div *ngFor="let friend of userFriends" class="bg-[#1E293B] rounded-lg p-4">
+        <div class="flex items-center space-x-4">
+          <img [src]="friend.profilePic || 'assets/default-avatar.png'" alt="Friend's profile" class="w-16 h-16 rounded-full" />
+          <div>
+            <h3 class="font-medium">{{friend.name}}</h3>
+            <p class="text-sm text-gray-400">{{friend.department}}</p>
+            <button class="mt-2 text-sm text-blue-500 hover:text-blue-400 transition-colors">
+              View Profile
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

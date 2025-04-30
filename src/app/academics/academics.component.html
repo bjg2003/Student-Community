@@ -1,0 +1,169 @@
+<div class="flex min-h-screen bg-[#0B1120] text-white">
+  <!-- Sidebar (reusing the same sidebar structure from home component) -->
+  <aside [class.w-72]="!isSidebarCollapsed" [class.w-24]="isSidebarCollapsed" class="fixed h-full bg-[#1E293B] transition-all duration-300 overflow-y-auto">
+    <div class="p-4 flex items-center justify-between border-b border-gray-700">
+      <h1 [class.hidden]="isSidebarCollapsed" class="text-xl font-bold">Student Community</h1>
+      <button (click)="toggleSidebar()" class="p-2 rounded-lg hover:bg-gray-700 transition-colors">
+        <i class="fas" [class.fa-chevron-left]="!isSidebarCollapsed" [class.fa-chevron-right]="isSidebarCollapsed"></i>
+      </button>
+    </div>
+    
+    <div class="p-4">
+      <a routerLink="/home" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-[#1E293B] transition-colors" routerLinkActive="bg-[#1E293B]">
+        <i class="fas fa-home text-xl"></i>
+        <span [class.hidden]="isSidebarCollapsed">Home</span>
+      </a>
+      <a routerLink="/academics" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-[#1E293B] transition-colors bg-[#1E293B]">
+        <i class="fas fa-book text-xl"></i>
+        <span [class.hidden]="isSidebarCollapsed">Academics</span>
+      </a>
+      <a routerLink="/events" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-[#1E293B] transition-colors" routerLinkActive="bg-[#1E293B]">
+        <i class="fas fa-calendar-alt text-xl"></i>
+        <span [class.hidden]="isSidebarCollapsed">Events</span>
+      </a>
+      <a routerLink="/polling" class="flex items-center space-x-3 p-3 rounded-lg hover:bg-[#1E293B] transition-colors" routerLinkActive="bg-[#1E293B]">
+        <i class="fas fa-poll text-xl"></i>
+        <span [class.hidden]="isSidebarCollapsed">Polling</span>
+      </a>
+    </div>
+  </aside>
+
+  <!-- Main Content -->
+  <main [class.ml-72]="!isSidebarCollapsed" [class.ml-24]="isSidebarCollapsed" class="flex-1 transition-all duration-300 p-6">
+    <!-- Hero Section -->
+    <div class="bg-[#1E293B] rounded-lg p-8 mb-8 flex items-center justify-between">
+      <div class="max-w-2xl">
+        <h1 class="text-3xl font-bold text-blue-400 mb-4">All the tools right on your screen</h1>
+        <p class="text-gray-300 mb-6">
+          So here we welcome you to the Academics Page which offers a compact view to all the resources on institute as well as the student community has to offer. Dive in and enjoy the journey.
+        </p>
+        <button 
+          (click)="openCreateResourceModal()" 
+          class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition-colors"
+        >
+          Contribute
+        </button>
+      </div>
+      <div class="hidden md:block">
+        <img src="assets/academics-hero.svg" alt="Academics" class="w-64 h-64" />
+      </div>
+    </div>
+
+    <!-- Resources Section -->
+    <div class="mb-8">
+      <h2 class="text-2xl font-semibold mb-6">Checkout available resources</h2>
+      
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+        <!-- Books -->
+        <div 
+          (click)="filterResources('book')" 
+          class="bg-[#1E293B] rounded-lg p-6 flex flex-col items-center cursor-pointer hover:bg-[#2D3748] transition-colors"
+          [class.border-2]="activeResourceType === 'book'"
+          [class.border-blue-500]="activeResourceType === 'book'"
+        >
+          <div class="w-16 h-16 flex items-center justify-center mb-4 text-blue-400">
+            <i class="fas fa-book text-4xl"></i>
+          </div>
+          <h3 class="text-lg font-medium">Books</h3>
+        </div>
+        
+        <!-- Videos -->
+        <div 
+          (click)="filterResources('video')" 
+          class="bg-[#1E293B] rounded-lg p-6 flex flex-col items-center cursor-pointer hover:bg-[#2D3748] transition-colors"
+          [class.border-2]="activeResourceType === 'video'"
+          [class.border-blue-500]="activeResourceType === 'video'"
+        >
+          <div class="w-16 h-16 flex items-center justify-center mb-4 text-blue-400">
+            <i class="fas fa-video text-4xl"></i>
+          </div>
+          <h3 class="text-lg font-medium">Videos</h3>
+        </div>
+        
+        <!-- Useful Links -->
+        <div 
+          (click)="filterResources('link')" 
+          class="bg-[#1E293B] rounded-lg p-6 flex flex-col items-center cursor-pointer hover:bg-[#2D3748] transition-colors"
+          [class.border-2]="activeResourceType === 'link'"
+          [class.border-blue-500]="activeResourceType === 'link'"
+        >
+          <div class="w-16 h-16 flex items-center justify-center mb-4 text-blue-400">
+            <i class="fas fa-link text-4xl"></i>
+          </div>
+          <h3 class="text-lg font-medium">Useful Links</h3>
+        </div>
+        
+        <!-- Software & Licenses -->
+        <div 
+          (click)="filterResources('software')" 
+          class="bg-[#1E293B] rounded-lg p-6 flex flex-col items-center cursor-pointer hover:bg-[#2D3748] transition-colors"
+          [class.border-2]="activeResourceType === 'software'"
+          [class.border-blue-500]="activeResourceType === 'software'"
+        >
+          <div class="w-16 h-16 flex items-center justify-center mb-4 text-blue-400">
+            <i class="fas fa-cog text-4xl"></i>
+          </div>
+          <h3 class="text-lg font-medium">Software & Licenses</h3>
+        </div>
+      </div>
+    </div>
+
+    <!-- Resource List -->
+    <div *ngIf="filteredResources.length > 0" class="space-y-4">
+      <div *ngFor="let resource of filteredResources" class="bg-[#1E293B] rounded-lg p-4 hover:bg-[#2D3748] transition-colors">
+        <div class="flex items-start">
+          <div class="flex-shrink-0 mr-4">
+            <div class="w-12 h-12 flex items-center justify-center rounded-full bg-blue-500 bg-opacity-20 text-blue-400">
+              <i class="fas" 
+                [class.fa-book]="resource.type === 'book'"
+                [class.fa-video]="resource.type === 'video'"
+                [class.fa-link]="resource.type === 'link'"
+                [class.fa-cog]="resource.type === 'software'"
+              ></i>
+            </div>
+          </div>
+          <div class="flex-1">
+            <h3 class="text-lg font-medium">{{ resource.title }}</h3>
+            <p class="text-gray-400 mt-1">{{ resource.description }}</p>
+            <div class="mt-2 flex items-center justify-between">
+              <div class="flex items-center space-x-2 text-sm text-gray-400">
+                <img [src]="resource.uploadedByPic || 'assets/default-avatar.png'" alt="User" class="w-6 h-6 rounded-full" />
+                <span>{{ resource.uploadedBy }}</span>
+              </div>
+              <a 
+                [href]="resource.url" 
+                target="_blank" 
+                class="text-blue-400 hover:text-blue-300 transition-colors"
+              >
+                <i class="fas fa-external-link-alt mr-1"></i>
+                Open Resource
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empty State -->
+    <div *ngIf="filteredResources.length === 0" class="bg-[#1E293B] rounded-lg p-8 text-center">
+      <div class="w-20 h-20 mx-auto mb-4 flex items-center justify-center rounded-full bg-blue-500 bg-opacity-20 text-blue-400">
+        <i class="fas fa-search text-3xl"></i>
+      </div>
+      <h3 class="text-xl font-medium mb-2">No resources found</h3>
+      <p class="text-gray-400 mb-6">There are no resources available for this category yet.</p>
+      <button 
+        (click)="openCreateResourceModal()" 
+        class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-6 rounded-md transition-colors"
+      >
+        Contribute a Resource
+      </button>
+    </div>
+  </main>
+</div>
+
+<!-- Create Resource Modal -->
+<app-create-resource 
+  *ngIf="showCreateResource" 
+  (closeModal)="closeCreateResourceModal()" 
+  (resourceCreated)="handleResourceCreated()"
+></app-create-resource>

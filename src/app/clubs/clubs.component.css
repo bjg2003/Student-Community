@@ -1,0 +1,277 @@
+:host {
+  display: block;
+  min-height: 100vh;
+  background-color: #020617;
+  color: #fff;
+}
+
+.clubs-container {
+  padding: 2rem;
+  min-height: 100vh;
+  background-color: #0f172a;
+  color: #fff;
+}
+
+.clubs-header {
+  margin-bottom: 3rem;
+}
+
+.title-section {
+  margin-bottom: 2rem;
+}
+
+.main-title {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 1rem;
+  background: linear-gradient(45deg, #3b82f6, #2563eb);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.subtitle {
+  color: #94a3b8;
+  font-size: 1.125rem;
+  line-height: 1.6;
+  max-width: 800px;
+}
+
+.search-section {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.search-bar {
+  flex: 1;
+}
+
+.search-bar input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  border: 1px solid #1e293b;
+  background-color: #0f172a;
+  color: #fff;
+  font-size: 1rem;
+}
+
+.search-bar input:focus {
+  outline: none;
+  border-color: #3b82f6;
+}
+
+.create-club-btn {
+  padding: 0.75rem 1.5rem;
+  background-color: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.create-club-btn:hover {
+  background-color: #2563eb;
+}
+
+.tags-filter {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.tag-btn {
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  background-color: #1e293b;
+  color: #94a3b8;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tag-btn:hover {
+  background-color: #2563eb;
+  color: #fff;
+}
+
+.tag-btn.active {
+  background-color: #3b82f6;
+  color: #fff;
+}
+
+.clubs-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.club-card {
+  background-color: #0f172a;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.2s;
+  border: 1px solid #1e293b;
+}
+
+.club-card:hover {
+  transform: translateY(-4px);
+}
+
+.club-header {
+  padding: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  border-bottom: 1px solid #1e293b;
+}
+
+.club-logo {
+  width: 64px;
+  height: 64px;
+  border-radius: 12px;
+  object-fit: cover;
+}
+
+.club-info h3 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: 0.25rem;
+}
+
+.club-info .members {
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+.club-content {
+  padding: 1.5rem;
+}
+
+.description {
+  color: #94a3b8;
+  margin-bottom: 1rem;
+  line-height: 1.6;
+}
+
+.club-tags {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  margin-bottom: 1rem;
+}
+
+.club-tags .tag {
+  padding: 0.25rem 0.75rem;
+  background-color: #1e293b;
+  color: #94a3b8;
+  border-radius: 16px;
+  font-size: 0.875rem;
+}
+
+.club-president {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.president-pic {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+}
+
+.president-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.president-info .label {
+  color: #94a3b8;
+  font-size: 0.75rem;
+}
+
+.president-info .name {
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.club-social {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.social-link {
+  color: #94a3b8;
+  font-size: 1.25rem;
+  transition: color 0.2s;
+}
+
+.social-link:hover {
+  color: #3b82f6;
+}
+
+.upcoming-events h4 {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.event {
+  padding: 1rem;
+  background-color: #1e293b;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.event h5 {
+  font-size: 0.875rem;
+  font-weight: 500;
+  margin-bottom: 0.5rem;
+}
+
+.event-details {
+  display: flex;
+  justify-content: space-between;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  margin-bottom: 0.5rem;
+}
+
+.register-btn {
+  display: inline-block;
+  padding: 0.5rem 1rem;
+  background-color: #3b82f6;
+  color: #fff;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 0.875rem;
+  transition: background-color 0.2s;
+}
+
+.register-btn:hover {
+  background-color: #2563eb;
+}
+
+@media (max-width: 768px) {
+  .clubs-container {
+    padding: 1rem;
+  }
+
+  .main-title {
+    font-size: 2.5rem;
+  }
+
+  .search-section {
+    flex-direction: column;
+  }
+
+  .clubs-grid {
+    grid-template-columns: 1fr;
+  }
+}

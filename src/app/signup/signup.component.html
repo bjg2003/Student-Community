@@ -1,0 +1,52 @@
+<div class="signup-container">
+  <h2>Register as</h2>
+  <div class="role-toggle">
+    <button (click)="selectRole('individual')">Individual</button>
+    <button (click)="selectRole('club')">Club</button>
+  </div>
+
+<form [formGroup]="signupForm" (ngSubmit)="onSubmit()" *ngIf="signupForm">
+    <input type="email" formControlName="email" placeholder="College Email" />
+
+    <input [type]="showPassword ? 'text' : 'password'" formControlName="password" placeholder="Password" />
+    <button type="button" (click)="showPassword = !showPassword">👁️</button>
+
+    <input [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword" placeholder="Confirm Password" />
+    <button type="button" (click)="showConfirmPassword = !showConfirmPassword">👁️</button>
+
+    <div *ngIf="signupForm.hasError('passwordMismatch') && signupForm.get('confirmPassword')?.touched">
+      <span>Passwords do not match.</span>
+    </div>
+
+    <div *ngIf="selectedRole === 'individual'">
+      <input formControlName="fullName" placeholder="Full Name" />
+      <input formControlName="studentId" placeholder="Student ID" />
+      <input formControlName="branch" placeholder="Branch" />
+      <input formControlName="gender" placeholder="Gender" />
+      <input formControlName="batch" placeholder="Batch" />
+      <input type="date" formControlName="birthday" />
+      <textarea formControlName="bio" placeholder="Short bio"></textarea>
+      <input type="file" formControlName="profilePicture" />
+    </div>
+
+    <div *ngIf="selectedRole === 'club'">
+      <input formControlName="clubName" placeholder="Club Name" />
+      <textarea formControlName="description" placeholder="Description"></textarea>
+      <input formControlName="category" placeholder="Category" />
+      <input formControlName="clubId" placeholder="Club ID" />
+
+      <div formArrayName="coreMembers">
+        <div *ngFor="let member of coreMembers.controls; let i = index" [formGroupName]="i">
+          <input formControlName="name" placeholder="Core Member Name" />
+          <input formControlName="role" placeholder="Role" />
+          <input formControlName="email" placeholder="Email" />
+          <button type="button" (click)="removeCoreMember(i)">Remove</button>
+        </div>
+        <button type="button" (click)="addCoreMember()">Add Core Member</button>
+      </div>
+    </div>
+
+    <div *ngIf="errorMessage" class="error">{{ errorMessage }}</div>
+    <button type="submit" [disabled]="isSubmitting">Register</button>
+  </form>
+</div>
