@@ -64,11 +64,4 @@ Built with **Spring Boot (Java)** for backend and **Angular (latest version)** f
 - Use **Postman** collection provided for backend API testing.
 - Angular frontend is tested with built-in unit testing and form validation.
 
----
-
-## ✨ Contributors
-
-- **Amit Bhute**
-- **Naudit Bisen**
-- **Bhuvan Girhepunje** 
 
